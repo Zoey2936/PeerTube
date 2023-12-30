@@ -6,6 +6,7 @@ on:
       - 'master'
   schedule:
     - cron: '0 3 * * *'
+  workflow_dispatch:
 
 jobs:
   generate-matrix:
@@ -24,11 +25,18 @@ jobs:
           # FIXME: https://github.com/actions/checkout/issues/290
           git fetch --force --tags
 
-          one="{ \"file\": \"./support/docker/production/Dockerfile.bookworm\", \"ref\": \"develop\", \"tags\": \"chocobozzz/peertube:develop-bookworm\" }"
-          two="{ \"file\": \"./support/docker/production/Dockerfile.bookworm\", \"ref\": \"master\", \"tags\": \"chocobozzz/peertube:production-bookworm,chocobozzz/peertube:$(git describe --abbrev=0)-bookworm\" }"
-          three="{ \"file\": \"./support/docker/production/Dockerfile.nginx\", \"ref\": \"master\", \"tags\": \"chocobozzz/peertube-webserver:latest\" }"
+          one="{ \"file\": \"./support/docker/production/bookworm.Dockerfile\", \"ref\": \"develop\", \"tags\": \"chocobozzz/peertube:develop,chocobozzz/peertube:develop-bookworm\" }"
+          two="{ \"file\": \"./support/docker/production/bookworm.Dockerfile\", \"ref\": \"develop\", \"tags\": \"chocobozzz/peertube:develop-alpine\" }"
+          matrix="[$one-develop,$two-develop]"
+          
+          if [ ${{ github.ref_name }} = 'master' ]; then
+            three="{ \"file\": \"./support/docker/production/bookworm.Dockerfile\", \"ref\": \"master\", \"tags\": \"chocobozzz/peertube:latest,chocobozzz/peertube:production,chocobozzz/peertube:production-bookworm,chocobozzz/peertube:$(git describe --abbrev=0)-bookworm\" }"
+            four="{ \"file\": \"./support/docker/production/alpine.Dockerfile\", \"ref\": \"master\", \"tags\": \"chocobozzz/peertube:alpine,chocobozzz/peertube:production-alpine,chocobozzz/peertube:$(git describe --abbrev=0)-alpine\" }"
+            five="{ \"file\": \"./support/docker/production/nginx.Dockerfile\", \"ref\": \"master\", \"tags\": \"chocobozzz/peertube-webserver:latest\" }"
+            matrix="[$matrix,$three,$four,$five]"
+          fi
 
-          matrix="[$one,$two,$three]"
+          echo $matrix
           echo "matrix={\"include\":$matrix}" >> $GITHUB_OUTPUT
 
   docker:
