@@ -2,8 +2,9 @@ name: Docker
 
 on:
   push:
-    tags:   
-      - v*
+    branches:   
+      - master
+      - develop
   schedule:
     - cron: '0 3 * * *'
 
