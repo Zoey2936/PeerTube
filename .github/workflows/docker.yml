@@ -71,7 +71,7 @@ jobs:
           ref: ${{ matrix.ref }}
       -
         name: Docker build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: '.'
           platforms: linux/amd64,linux/arm64
