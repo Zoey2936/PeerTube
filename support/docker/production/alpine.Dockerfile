@@ -30,7 +30,7 @@ COPY --from=build /app /app
 WORKDIR /app
 
 # Install dependencies
-RUN apk add --no-cache ca-certificates tzdata tini ffmpeg shadow && \
+RUN apk add --no-cache ca-certificates tzdata tini ffmpeg su-exec shadow && \
 # Add peertube user
     groupadd -r peertube && \
     useradd -r -g peertube -m peertube && \
