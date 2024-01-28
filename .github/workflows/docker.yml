@@ -16,8 +16,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: master
       - name: Set matrix for build
         id: set-matrix
         run: |
@@ -25,7 +23,7 @@ jobs:
           git fetch --force --tags
 
           one="{ \"file\": \"./support/docker/production/bookworm.Dockerfile\", \"ref\": \"develop\", \"tags\": \"chocobozzz/peertube:develop,chocobozzz/peertube:develop-bookworm\" }"
-          two="{ \"file\": \"./support/docker/production/bookworm.Dockerfile\", \"ref\": \"develop\", \"tags\": \"chocobozzz/peertube:develop-alpine\" }"
+          two="{ \"file\": \"./support/docker/production/alpine.Dockerfile\", \"ref\": \"develop\", \"tags\": \"chocobozzz/peertube:develop-alpine\" }"
           matrix="[$one-develop,$two-develop]"
           
           if [ ${{ github.event_name }} = 'push' ]; then
