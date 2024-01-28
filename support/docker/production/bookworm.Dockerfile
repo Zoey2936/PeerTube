@@ -5,7 +5,7 @@ COPY . /app
 ARG TARGETARCH
 WORKDIR /app
 RUN apt update && \
-    apt install -y --no-install-recommends openssl ffmpeg python3 ca-certificates gnupg build-essential curl git && \
+    apt install -y --no-install-recommends openssl ffmpeg python3 ca-certificates && \
     if [ "$TARGETARCH" = "amd64" ]; then \
       cd /app/client && \
       npm_config_target_platform=linux npm_config_target_arch=x64 yarn install --pure-lockfile --network-timeout 1200000 && \
@@ -32,7 +32,7 @@ WORKDIR /app
 
 # Install dependencies
 RUN apt update && \
-    apt install -y --no-install-recommends openssl ffmpeg python3 ca-certificates gnupg build-essential curl git tini && \
+    apt install -y --no-install-recommends openssl ffmpeg python3 ca-certificates tini gosu && \
     rm /var/lib/apt/lists/* -fR && \
 # Add peertube user
     groupadd -r peertube && \
