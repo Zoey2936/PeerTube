@@ -1,5 +1,5 @@
 # Install manually client dependencies to apply our network timeout option
-FROM --platform="$BUILDPLATFORM" node:18.19.0-bookworm-slim as build
+FROM --platform="$BUILDPLATFORM" node:21.6.1-bookworm-slim as build
 SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 COPY . /app
 ARG TARGETARCH
@@ -25,7 +25,7 @@ RUN apt update && \
     fi && \
     yarn cache clean --all
 
-FROM node:18.19.0-bookworm-slim
+FROM node:21.6.1-bookworm-slim
 SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 COPY --from=build /app /app
 WORKDIR /app
