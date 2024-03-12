@@ -1,5 +1,5 @@
 # Install manually client dependencies to apply our network timeout option
-FROM --platform="$BUILDPLATFORM" node:18.19.0-alpine as build
+FROM --platform="$BUILDPLATFORM" node:21.7.1-alpine as build
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 COPY . /app
 ARG TARGETARCH
@@ -24,7 +24,7 @@ RUN apk add --no-cache ca-certificates bash && \
     fi && \
     yarn cache clean --all
 
-FROM node:18.19.0-alpine
+FROM node:21.7.1-alpine
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 COPY --from=build /app /app
 WORKDIR /app
